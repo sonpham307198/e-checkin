@@ -1,0 +1,10 @@
+function survey(){
+       $('.check').hide();
+     $('.survey').hide();
+   $('.checkout').hide();
+        $('.loading').show();
+ 
+   location.href="https://docs.google.com/forms/d/e/1FAIpQLSeVnOV3a-eU8bjqtn4Kv7E0F2MdhFSwmf-8KP3UXfPAdt6GsQ/viewform?usp=pp_url&entry.215162100="+ localStorage.getItem('checkinstt')+"&entry.154127601="+ localStorage.getItem('checkinhoten')+"&entry.817427025="+ localStorage.getItem('checkinsdt')+"&entry.2065791524="+ localStorage.getItem('checkindongxe');
+     //viewform?usp=pp_url&entry.1693974506="+ localStorage.getItem('checkindanhxung')+"&entry.1342303482="+ localStorage.getItem('checkinhoten')+"&entry.542805465="+ localStorage.getItem('checkinsdt')+"&entry.2065791524="+ localStorage.getItem('checkindongxe')+"";
+   
+ }
