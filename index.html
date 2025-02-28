@@ -1,0 +1,276 @@
+<html>
+  <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>  
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<title>e-CHECK-IN</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HNV8BGYG71"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HNV8BGYG71');
+</script>
+      <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K3HXJLD');</script>
+<!-- End Google Tag Manager -->
+<script>
+  var data;
+function check(){
+   
+  var c= $('#txt-sdt').val();
+  if (c!="") {
+    $('.loading').show();
+     $('.h1-name').hide();
+       $('.check').hide();
+    $.ajax({url: "https://script.google.com/macros/s/AKfycbwW4mREnb5qJuDUVPt5nnvrCIJ_iNrB44syBEB3k07a9A5ICeG2R5Mkrg9L9uYWh9zRyA/exec?id=" + c, success:    function(result){
+   data =JSON.parse(JSON.stringify(result));
+      //var $div1 = jQuery("<div id='div1' style='display:none'>"+result+"</div>");
+      //jQuery("body").append($div1);
+      console.log(data.length);
+      if(data.length>0) {
+        $('.loading').hide();
+         $('.h1-stt h1').removeClass('importantRule');
+         $('.check input').attr('value','CHECK-IN');
+        try {
+       
+             $('.h2-title h1').text(data[2] + " " + data[3]);
+            // $('.h2-title h2').text("Thương hiệu: " + data[6]);
+             $('.lien-he h3').text("" + data[7] );
+       localStorage.setItem('checkinsdt',c);
+       localStorage.setItem('checkindanhxung',data[2]);
+       localStorage.setItem('checkinhoten',data[3]);
+     //  localStorage.setItem('checkinthuonghieu',data[6]);
+       localStorage.setItem('checkindongxe',data[7]);
+       localStorage.setItem('checkinstt',data[11]);
+       localStorage.setItem('hoanthanh',data[13]);
+ $('.check').show();
+          $('.checkout').show();
+    if (  localStorage.getItem('checkinstt')!=''&& localStorage.getItem('checkinstt')!='undefined') {
+      if (  localStorage.getItem('hoanthanh').length>0) {
+                     $('.lien-he h3').text(data[7] + ' (Stt ' + data[11] + ')');
+
+       $('.h1-stt h1').html('Đã hoàn thành!<br>Kính chúc Quý khách một ngày tốt lành.');
+       $('.h1-stt h1').addClass('importantRule');
+       // $('.check input').attr('value','CHECK-IN LÁI THỬ XE KHÁC');
+        
+         $('.check').hide();
+      $('.checkout').show();
+    } else {
+      $('.h1-stt h1').text(data[11]);
+          $('.check').hide();
+      $('.checkout').show();
+      $('.survey').show();
+    }
+    }
+     } catch {
+       
+    }
+      } else {
+         $('.h1-name').show();
+       $('.check').hide();
+        $('.loading').hide();
+      }
+     
+  }});
+     }
+  }
+       function checkout() {
+          localStorage.setItem('checkinsdt','');
+       localStorage.setItem('checkindanhxung','');
+       localStorage.setItem('checkinhoten','');
+       localStorage.setItem('checkinthuonghieu','');
+       localStorage.setItem('checkindongxe','');
+        localStorage.setItem('checkinstt','');
+         location.href=location.pathname;
+       }
+ function checkin(){
+       $('.check').hide();
+   $('.checkout').hide();
+        $('.loading').show();
+ 
+        // $.ajax({url: "https://docs.google.com/forms/d/e/1FAIpQLSfPaZaeT6O9BK2Mq473PULMkWLQyNDrTxf4xt4hzxwDbW0gxg/formResponse?usp=pp_url&entry.1881844914="+ localStorage.getItem('checkindanhxung')+"&entry.8358915="+ localStorage.getItem('checkinhoten')+"&entry.1694764995="+ localStorage.getItem('checkinsdt')+"&entry.1376677248="+ localStorage.getItem('checkindongxe')+""}).failure();
+
+ //  location.href="https://docs.google.com/forms/d/e/1FAIpQLSfPaZaeT6O9BK2Mq473PULMkWLQyNDrTxf4xt4hzxwDbW0gxg/viewform?usp=pp_url&entry.1881844914="+ localStorage.getItem('checkindanhxung')+"&entry.8358915="+ localStorage.getItem('checkinhoten')+"&entry.1694764995="+ localStorage.getItem('checkinsdt')+"&entry.1376677248="+ localStorage.getItem('checkindongxe')+"";
+   
+ }
+  
+   function survey() {
+    $('.check').hide();
+    $('.survey').hide();
+    $('.checkout').hide();
+    $('.loading').show();
+
+    var checkinstt = localStorage.getItem('checkinstt');
+    var surveyLink = "https://docs.google.com/forms/d/e/1FAIpQLSeVnOV3a-eU8bjqtn4Kv7E0F2MdhFSwmf-8KP3UXfPAdt6GsQ/viewform?usp=pp_url&entry.215162100=" + checkinstt +
+        "&entry.154127601=" + localStorage.getItem('checkinhoten') +
+        "&entry.817427025=" + localStorage.getItem('checkinsdt') +
+        "&entry.2065791524=" + localStorage.getItem('checkindongxe');
+    
+    // Kiểm tra nếu checkinstt có chứa 'S' ở đầu
+    if (/^S\d+/.test(checkinstt)) {
+        surveyLink = "https://docs.google.com/forms/d/e/1FAIpQLScl1sXhqny5qrAUPnd-XfcGc2JXuhamTkjXQPPgtYQRhXRHKw/viewform?usp=pp_url&entry.575443961=" + checkinstt +
+            "&entry.1584443521=" + localStorage.getItem('checkinhoten') +
+            "&entry.215162100=" + localStorage.getItem('checkinsdt') +
+            "&entry.1114020381=" + localStorage.getItem('checkindongxe');
+    }
+    
+    location.href = surveyLink;
+}
+
+ $(document).ready(function(){
+   //loadthongtin();
+   if( localStorage.getItem('checkinsdt')!='') {
+      $('#txt-sdt').val(localStorage.getItem('checkinsdt'));
+     check();
+   }
+});
+  //alert(21);
+  </script>
+  <style>
+    .main {
+      width:550px;height:1000px;position:relative;margin:auto;background:url(https://drive.google.com/thumbnail?id=1OIZEp-bKYP1G6UQkbqMsFhJQ447MGu3s&sz=w800);background-repeat:no-repeat;    background-size: contain; 
+      max-height:100vh; overflow:hidden;background-position:center top;
+    }
+    .importantRule { font-size: 13px !important; padding: 10px 5px;    color: #daffd0;}
+
+@font-face {
+  font-family: checkin;
+  src: url('/peugeot/font/font/VN-PeugeotNew-Regular.ttf') format('truetype');
+}
+    @font-face {
+  font-family: checkin;
+      font-weight:bold;
+  src: url('/peugeot/font/font/VN-PeugeotNew-Regular.ttf') format('truetype');
+}
+    @font-face {
+  font-family: checkinlight;
+      font-weight:50;
+  src: url('/peugeot/font/font/VN-Peugeot New Light.ttf') format('truetype');
+}
+        @font-face {
+  font-family: checkin;
+      font-weight:10;
+  src: url('/peugeot/font/font/VN-PeugeotNew-Regular.ttf') format('truetype');
+}
+   * {
+      color:white;
+      font-family:checkin;
+     font-weight:100;
+    }
+    body {
+          padding: 0;
+    margin: 0;
+      
+    }
+    @media only screen and (max-width: 600px) {
+      .main {
+        width:100vw !important;
+        height:100vh !important;
+        max-height: 100vh !important;
+       /* max-height: calc (100vw / 9 * 20) !important;*/
+      }
+      .logo h1 {
+        font-size:16pt  !important;
+      }
+         .logo h2 {
+        font-size:9pt  !important;
+      }
+      .logo1 img {
+        width:120px !important;
+        top:20px !important;left:20px !important;
+      }
+      .logo {
+        top:110px !important;
+      }
+   
+      .h1-stt h1 {
+        font-size:60pt;
+      }
+        .h2-title h1 {
+        font-size:16pt  !important;
+          font-weight:bold  !important;
+      } 
+       
+      .h1-name input {
+        font-size:13pt !important;
+        width:70% !important;
+      }
+}
+    .h1-stt h1{
+      margin: 0;font-weight: bold;    font-size: 70pt;
+    }
+    #loginform {
+      position: absolute;
+    width: 90%;
+    margin-left: 5%;
+    padding: 30 0;
+    background: #1a467373;
+    border-radius: 20px;
+    top: 40vh;
+    }
+    .loading {
+      text-align:center;
+      font-size:10pt;
+      display:none;
+    }
+  </style>
+</head>
+<body>
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K3HXJLD"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<div class='main' style=''>
+  <div class=logo1 style='position:absolute;top:40px;left:40px'>
+     
+  </div>
+    <div class=logo style='position:relative;top:0px'>
+<h1 style="text-align:center;font-weight:100;font-size: 30pt;">
+       </h1>    
+      <h2 style="text-align:center;font-weight:10;font-size: 12pt;">
+       </h2>
+  </div>
+  <div id=loginform>
+<div class='h1-name' style='width: 100%;text-align: center;  text-transform:uppercase;font-size: 11pt; '>
+  <input type="text" id='txt-sdt' style="width: 80%; padding: 10px;   text-align: center;color:rgb(28, 105, 212)" placeholder='Nhập SĐT'><BR>
+  <input type='button' value='Check-in' style='    background-color: rgb(28, 105, 212);padding: 10px;width: 80%;margin-top: 30px;margin-bottom: 10px;' onclick='check()'><br>
+  <a href='https://docs.google.com/forms/d/e/1FAIpQLScl_PnMMqPoTjYbTUSOb5dcHnTSikn9E6WKp9M2fjm1sX9_XQ/viewform?usp=header' style='padding: 10px;width: 60%;margin-top: 30px;text-transform:none;font-size: 10pt;'>Đăng ký mới</a>
+
+  </div>
+ 
+  <div class='h2-title' style='width: 100%;text-align: center;margin: 0;     padding-top: 10px;   font-size: 13pt;    ;'>
+      <h1 style='margin: 0;'>  </h1>
+  <h2  style='margin: 0;font-size: 14pt;'>
+   
+  </h2>
+     <div class='lien-he' style='width: 100%;text-align: center;margin: 0;    font-size: 9pt;   ' >
+      <h3  style='margin: 0;font-size: 14pt;'>  </h3>
+    </div>
+    </div>
+ <div class='h1-stt' style='width: 100%;text-align: center;margin: 0;     font-size: 36pt;   '>
+      <h1 style=''>  </h1>
+  </div>
+   
+  
+  <div class='loading' style='text-align:center;display:none; '><h2>ĐANG KIỂM TRA...</h2></div>
+   <div style='text-align:center;display:none' class='check' />
+   <input type='button' value='CHECK-IN' style='    background-color: rgb(28, 105, 212);    padding: 10px;    width: 60%;    margin-top: 30px;margin-bottom: 10px;' onclick='checkin()'><br>
+  </div>
+       <div style='text-align:center;display:none' class='survey' />
+   <input type='button' value='Đánh giá về chương trình' style='    background-color: rgb(28, 105, 212);    padding: 10px;    width: 60%;    margin-top: 30px;margin-bottom: 10px;' onclick='survey()'><br>
+  </div>
+  <div style='text-align:center;display:none;    padding-top: 30px;' class='checkout' />
+        
+    <a onclick='checkout()' href='#' style='padding: 10px;    width: 60%;    margin-top: 30px;text-transform:none;font-size: 10pt;    border: 1px solid white;
+    padding: 5px 40px;'><i></i>Đăng xuất</a>
+  
+  </div>
+</div>
+</div>
+</body>
+
+</html>
